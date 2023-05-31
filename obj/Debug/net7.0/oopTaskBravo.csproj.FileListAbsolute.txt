@@ -1,0 +1,15 @@
+/home/amplifiedge/Desktop/oopTaskBravo/bin/Debug/net7.0/oopTaskBravo
+/home/amplifiedge/Desktop/oopTaskBravo/bin/Debug/net7.0/oopTaskBravo.deps.json
+/home/amplifiedge/Desktop/oopTaskBravo/bin/Debug/net7.0/oopTaskBravo.runtimeconfig.json
+/home/amplifiedge/Desktop/oopTaskBravo/bin/Debug/net7.0/oopTaskBravo.dll
+/home/amplifiedge/Desktop/oopTaskBravo/bin/Debug/net7.0/oopTaskBravo.pdb
+/home/amplifiedge/Desktop/oopTaskBravo/obj/Debug/net7.0/oopTaskBravo.csproj.AssemblyReference.cache
+/home/amplifiedge/Desktop/oopTaskBravo/obj/Debug/net7.0/oopTaskBravo.GeneratedMSBuildEditorConfig.editorconfig
+/home/amplifiedge/Desktop/oopTaskBravo/obj/Debug/net7.0/oopTaskBravo.AssemblyInfoInputs.cache
+/home/amplifiedge/Desktop/oopTaskBravo/obj/Debug/net7.0/oopTaskBravo.AssemblyInfo.cs
+/home/amplifiedge/Desktop/oopTaskBravo/obj/Debug/net7.0/oopTaskBravo.csproj.CoreCompileInputs.cache
+/home/amplifiedge/Desktop/oopTaskBravo/obj/Debug/net7.0/oopTaskBravo.dll
+/home/amplifiedge/Desktop/oopTaskBravo/obj/Debug/net7.0/refint/oopTaskBravo.dll
+/home/amplifiedge/Desktop/oopTaskBravo/obj/Debug/net7.0/oopTaskBravo.pdb
+/home/amplifiedge/Desktop/oopTaskBravo/obj/Debug/net7.0/oopTaskBravo.genruntimeconfig.cache
+/home/amplifiedge/Desktop/oopTaskBravo/obj/Debug/net7.0/ref/oopTaskBravo.dll
