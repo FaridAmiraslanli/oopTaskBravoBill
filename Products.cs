@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 public class Products
 {
     static int _idCounter = 1;
-    public int Id { get; private set; }
-    public string Name { get; private set; }
-    public int Price { get; private set; }
+    public int Id { get; }
+    public string Name { get; }
+    public decimal Price { get; }
     public int Amount { get; set; }
-    public double Discount { get; private set; }
-    public bool BoolEDV { get; private set; }
-    public double EDV { get; private set; } = 0;
-    public string UnitOfMeasurement { get; private set; } = "pcs";
+    public decimal Discount { get; }
+    public bool BoolEDV { get; }
+    public decimal EDV { get; } = 0;
+    public string UnitOfMeasurement { get; } = "pcs";
     public static ArrayList db = new ArrayList();
 
-    public Products(string name, int price, double discount, bool boolEDV, string unitOfMeasurement)
+    public Products(string name, decimal price, decimal discount, bool boolEDV, string unitOfMeasurement)
     {
         Name = name;
         Price = price;

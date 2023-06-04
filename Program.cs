@@ -7,56 +7,65 @@ namespace oopTaskBravo
     {
         static void Main(string[] args)
         {
-            Products potato = new Products("Potato", 2, 0.2, false, "kg");
-            Products tomato = new Products("Tomato", 4, 0.1, false, "kg");
-            Products batteryDuracell = new Products("Battery Duracell", 18, 0.05, true, "pcs");
-            Products coffee = new Products("Coffee 100gr", 16, 0.05, true, "pcs");
-            Products tea = new Products("Azerchay 100gr", 4, 0.15, true, "pcs");
+            Products potato = new Products("Potato", 2, 0.2m, false, "kg");
+            Products tomato = new Products("Tomato", 4, 0.1m, false, "kg");
+            Products batteryDuracell = new Products("Battery Duracell", 18, 0.05m, true, "pcs");
+            Products coffee = new Products("Coffee 100gr", 16, 0.05m, true, "pcs");
+            Products tea = new Products("Azerchay 100gr", 4, 0.15m, true, "pcs");
 
-            int budget = 450;
-            int totalPrice = 0;
-            int totalEDV = 0;
-            int totalDiscount = 0;
+            decimal budget = 450;
+            decimal budgetChecker = budget;
+            decimal totalPrice = 0;
+            decimal totalEDV = 0;
+            decimal totalDiscount = 0;
             bool continueToShop = true;
+            decimal delivery;
             ArrayList shoppingDb = new ArrayList();
-            ArrayList billDb = new ArrayList();
 
-            System.Console.WriteLine("Select products from the list below according to their position number:");
+            Console.WriteLine("Select products from the list below according to their position number:");
 
             foreach (Products item in Products.db)
             {
-                System.Console.WriteLine($"{item.Id}.{item.Name} | Price: {item.Price}");
+                Console.WriteLine($"{item.Id}.{item.Name} | Price: {item.Price}");
             }
 
             while (continueToShop)
             {
-                System.Console.WriteLine("Enter product position number:");
+            head:
+                Console.WriteLine("Enter product position number:");
                 int productId = int.Parse(Console.ReadLine() ?? "");
-                System.Console.WriteLine("Enter amount:");
+                Console.WriteLine("Enter amount:");
                 int amount = int.Parse(Console.ReadLine() ?? "");
                 Products purshasedProduct = (Products)Products.db[productId - 1];
                 purshasedProduct.Amount = amount;
-                budget -= (int)(amount * (purshasedProduct.Price - purshasedProduct.Discount * purshasedProduct.Price) * 0.98);
-                if (budget > 0)
+                budgetChecker -= (amount * purshasedProduct.Price * 0.98m - (purshasedProduct.Discount * purshasedProduct.Price * amount));
+                if (budgetChecker > 0)
                 {
                     shoppingDb.Add(purshasedProduct);
-                    System.Console.WriteLine("Continue to buy: y/n");
+                    Console.WriteLine("Continue to buy: y/n");
                     string continueOrNot = (Console.ReadLine() ?? "").ToLower();
                     continueToShop = continueOrNot != "y" ? false : true;
                 }
                 else
                 {
-                    budget += (int)(amount * (purshasedProduct.Price - purshasedProduct.Discount * purshasedProduct.Price) * 0.98);
-                    purshasedProduct.Amount = budget / purshasedProduct.Price;
+                    budgetChecker += (amount * purshasedProduct.Price * 0.98m - (purshasedProduct.Discount * purshasedProduct.Price * amount));
+                    purshasedProduct.Amount = (int)(budgetChecker / (purshasedProduct.Price * 0.98m - (purshasedProduct.Discount * purshasedProduct.Price)));
+                    Console.WriteLine($"Not enough budget for {amount} {purshasedProduct.UnitOfMeasurement} of {purshasedProduct.Name}");
+                    Console.WriteLine($"You can buy {purshasedProduct.Amount} {purshasedProduct.UnitOfMeasurement} of {purshasedProduct.Name} instead. Would you like to continue with amount of {purshasedProduct.Amount} : y/n");
+                    string agreeToBuy = (Console.ReadLine() ?? "").ToLower();
+                    if (agreeToBuy == "n")
+                    {
+                        goto head;
+                    }
                     shoppingDb.Add(purshasedProduct);
-                    System.Console.WriteLine("Not enough budget to continue...");
+
                     continueToShop = false;
                 }
 
             }
 
         start:
-            System.Console.WriteLine("Choose payment method: 1.cash 2.card");
+            Console.WriteLine("Choose payment method: 1.cash 2.card");
             string paymentMethod = (Console.ReadLine() ?? "").ToLower();
             if (paymentMethod == "1" || paymentMethod == "2" || paymentMethod == "cash" || paymentMethod == "card")
             {
@@ -65,40 +74,48 @@ namespace oopTaskBravo
             {
                 goto start;
             }
-
-            System.Console.WriteLine("| Product | Amount | Price (AZN) | EDV(%) | Total(AZN) |");
+            Console.WriteLine("| Product | Amount | Price (AZN) | EDV(%) | Total(AZN) |");
             foreach (Products item in shoppingDb)
             {
-
-                System.Console.WriteLine($"| {item.Name} | {item.Amount}{item.UnitOfMeasurement}  |   {item.Price}   |   {item.EDV}   |   {item.Amount * item.Price}   |");
-                System.Console.WriteLine($" Discount({item.Discount * 100}%) =================== {(int)(item.Discount * item.Price * item.Amount)}                    ");
-                totalDiscount += (int)(item.Discount * item.Price * item.Amount);
-                totalEDV += (int)(item.EDV / 100 * item.Price * item.Amount);
-                totalPrice += (int)(item.Amount * (item.Price - item.Discount * item.Price));
+                Console.WriteLine($"| {item.Name} | {item.Amount}{item.UnitOfMeasurement}  |   {item.Price}   |   {item.EDV}   |   {item.Amount * item.Price}   |");
+                Console.WriteLine($" Discount({(item.Discount * 100).ToString("0")}%) =================== {(item.Discount * item.Price * item.Amount).ToString("0.00")}                    ");
+                totalDiscount += (item.Discount * item.Price * item.Amount);
+                totalEDV += (item.EDV * 0.01m * item.Price * item.Amount);
+                totalPrice += (item.Amount * item.Price);
             }
 
-            System.Console.WriteLine(" +++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-            System.Console.WriteLine($"Total discount                                          | {totalDiscount}|");
-            System.Console.WriteLine($"Total EDV                                          | {totalEDV}|");
-            System.Console.WriteLine($"Bonus card discount(2%)                              | {(int)(totalPrice * 0.02)}|");
-            System.Console.WriteLine($"Total price                                          | {(int)(totalPrice * 0.98)}|");
-            System.Console.WriteLine($"Total price                                          | {(int)(totalPrice * 0.98)}|");
-            budget -= (int)(totalPrice * 0.98);
+            Console.WriteLine(" +++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+
             if (paymentMethod == "1" || paymentMethod == "cash")
             {
-                System.Console.WriteLine($"Payment method: Cash                   EDV cashback:{(int)(totalEDV * 0.1)}");
-                budget -= (int)(totalEDV * 0.1);
+                Console.WriteLine($"Total EDV:                                         | {totalEDV.ToString("0.00")}|");
+                Console.WriteLine($"Payment method: Cash                   EDV cashback:{(-totalEDV * 0.1m).ToString("0.00")}");
+                Console.WriteLine($"Total discount:                                          | -{totalDiscount.ToString("0.00")}|");
+                Console.WriteLine($"Bonus card discount(2%):                              | {(-totalPrice * 0.02m).ToString("0.00")}|");
+                Console.WriteLine($"Total price:                                          | {(totalPrice)}|");
+                delivery = totalPrice < 15 ? 4.5m : 0;
+                Console.WriteLine($"Delivery fee:                                   {delivery}");
+                Console.WriteLine($"Total payment:                                          | {(totalPrice * 0.98m - totalDiscount - totalEDV * 0.1m + delivery).ToString("0.00")}|");
+                budget -= (totalPrice * 0.98m - totalDiscount - totalEDV * 0.1m + delivery);
             }
             else
             {
-                System.Console.WriteLine($"Payment method: Card                   EDV cashback:{(int)(totalEDV * 0.15)}");
-                budget -= (int)(totalEDV * 0.15);
+                Console.WriteLine($"Total EDV:                                          | {totalEDV.ToString("0.00")}|");
+                Console.WriteLine($"Payment method: Card                   EDV cashback:{(-totalEDV * 0.15m).ToString("0.00")}");
+                Console.WriteLine($"Total discount:                                          | -{totalDiscount.ToString("0.00")}|");
+                Console.WriteLine($"Bonus card discount(2%):                              | {(-totalPrice * 0.02m).ToString("0.00")}|");
+                Console.WriteLine($"Total price:                                          | {(totalPrice).ToString("0.00")}|");
+                delivery = totalPrice < 15 ? 4.5m : 0;
+                Console.WriteLine($"Delivery fee:                                  {delivery}");
+                Console.WriteLine($"Total payment:                                          | {(totalPrice * 0.98m - totalDiscount - totalEDV * 0.15m + delivery).ToString("0.00")}|");
+                budget -= (totalPrice * 0.98m - totalDiscount - totalEDV * 0.15m + delivery);
             }
-            System.Console.WriteLine($"{budget} left in your balance.");
-            System.Console.WriteLine($"Date:{DateTime.Now}");
+
+            Console.WriteLine($"{budget.ToString("0.00")} left in your balance.");
+            Console.WriteLine($"Date:{DateTime.Now}");
             Random random = new Random();
             int randomNumber = random.Next(100000000, 999999999);
-            System.Console.WriteLine($"Number: {randomNumber}");
+            Console.WriteLine($"Number: {randomNumber}");
         }
     }
 }
